@@ -71,9 +71,15 @@
       * Return tx object, with default values, overwritted by passed params
       **/
       wallet.txDefaults = function (tx) {
+        var ethJSUtil = null
+        if (typeof EthJS !== 'undefined' && typeof EthJS.Util !== 'undefined')
+          ethJSUtil = EthJS.Util
+        else
+          ethJSUtil = ethUtil
+
         var txParams = {
-          gasPrice: EthJS.Util.intToHex(wallet.txParams.gasPrice),
-          gas: EthJS.Util.intToHex(wallet.txParams.gasLimit),
+          gasPrice: ethJSUtil.intToHex(wallet.txParams.gasPrice),
+          gas: ethJSUtil.intToHex(wallet.txParams.gasLimit),
           from: Web3Service.coinbase
         };
 
@@ -112,14 +118,20 @@
       * For a given address and data, sign a transaction offline
       */
       wallet.offlineTransaction = function (address, data, nonce, cb) {
+        var ethJSUtil = null
+        if (typeof EthJS !== 'undefined' && typeof EthJS.Util !== 'undefined')
+          ethJSUtil = EthJS.Util
+        else
+          ethJSUtil = ethUtil
+
         // Create transaction object
         var txInfo = {
           from: Web3Service.coinbase,
           to: address,
-          value: EthJS.Util.intToHex(0),
-          gasPrice: EthJS.Util.intToHex(wallet.txParams.gasPrice),
-          gas: EthJS.Util.intToHex(wallet.txParams.gasLimit),
-          nonce: nonce?nonce:EthJS.Util.intToHex(wallet.txParams.nonce),
+          value: ethJSUtil.intToHex(0),
+          gasPrice: ethJSUtil.intToHex(wallet.txParams.gasPrice),
+          gas: ethJSUtil.intToHex(wallet.txParams.gasLimit),
+          nonce: nonce ? nonce: ethJSUtil.intToHex(wallet.txParams.nonce),
           data: data
         };
 
